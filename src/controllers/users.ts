@@ -4,6 +4,8 @@ import multer from 'multer';
 import path from 'path';
 import validSchema from './Validate_schema';
 
+//((((((((((((((((((((((((((((((((((Post data into project table))))))))))))))))))))))))))))))))))
+
 const createProject = async (req: Request, res: Response) => {
     // console.log('data', connection.query("SELECT * FROM projects"));
     const { error } = validSchema.createProjectSchema.validate(req.body);
@@ -37,7 +39,7 @@ const createProject = async (req: Request, res: Response) => {
 }
 
 
-//(((((((((((((((((((((((((((((((((((((((((((((Upload File Functions)))))))))))))))))))))))))))))))))))))))))))))
+//(((((((((((((((((((((((((((((((((((((((((((((POST Upload File Functions)))))))))))))))))))))))))))))))))))))))))))))
 
 const storageConfig = multer.diskStorage({
     // destinations is uploads folder 
@@ -141,9 +143,32 @@ const getProjectList = (req: Request, res: Response) => {
     })
 }
 
+//(((((((((((((((((((((((((((((((((((((((Get full lit of scan))))))))))))))))))))))))))))))))))))
+
+const getScanList = (req:Request, res: Response) =>{
+    
+    connection.query("select * from scans", function (err, result){
+        if(err) {
+            res.status(400).json({
+                code: 400,
+                status: false,
+                message: "errorrrrrrr"
+            })
+        } else {
+            res.status(200).json({
+                code: 200,
+                status: true,
+                message: "Scans List successfully retrieved", 
+                data : result
+                }
+            )
+        }
+    })
+}
 
 export default {
     createProject,
     getProjectList,
-    createScan
+    createScan,
+    getScanList
 }
